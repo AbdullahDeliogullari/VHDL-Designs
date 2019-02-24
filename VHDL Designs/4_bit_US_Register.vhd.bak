@@ -1,0 +1,37 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity U_S_Register is
+port(
+		input1	: in std_logic_vector(3 downto 0);
+		SR_input: in std_logic;
+		SL_input: in std_logic;
+		Reset	: in std_logic;
+		Clk	: in std_logic;
+		Sel	: in std_logic_vector(1 downto 0);
+		output	: out std_logic_vector(3 downto 0));
+end U_S_Register;
+
+architecture Behavior_USR of U_S_Register is
+signal sig_out : std_logic_vector(3 downto 0) := "0000";
+begin
+	process(Reset,Clk,Sel,input1,sig_out)
+	begin
+		if Reset = '1' then
+			output <= "0000";
+		elsif rising_edge(Clk) then
+			if Sel = "01" then
+				sig_out(3 downto 1) <= sig_out(2 downto 0);
+				sig_out(0) <= SR_input;
+				output(3 downto 0) <= sig_out(3 downto 0);
+			elsif Sel = "10" then
+				sig_out(2 downto 0) <= sig_out(3 downto 1);
+				sig_out(3) <= SL_input;
+				output(3 downto 0) <= sig_out(3 downto 0);
+			elsif Sel = "11" then
+				output(3 downto 0) <= input1(3 downto 0);
+			end if;
+		end if;
+	end process;
+end Behavior_USR;
+			

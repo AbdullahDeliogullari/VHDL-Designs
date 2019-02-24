@@ -1,0 +1,27 @@
+-- Priority Encoder Navigation
+-- 8 to 3
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity eight_bit_PE is
+port(
+		input	: in std_logic_vector(7 downto 0);
+		output	: out std_logic_vector(2 downto 0));
+end eight_bit_PE;
+
+architecture PE_Behavior of eight_bit_PE is
+begin
+		Encoder	: process(input)
+		begin
+			if 	  (input = "10000000") then output <= "000";--N
+			elsif (input = "01000000") then output <= "001";--NE
+			elsif (input = "00100000") then output <= "010";--E 
+			elsif (input = "00010000") then output <= "011";--SE
+			elsif (input = "00001000") then output <= "100";--S 
+			elsif (input = "00000100") then output <= "101";--SW
+			elsif (input = "00000010") then output <= "110";--W
+			else  output <= "111";--NW
+			end if;
+		end process Encoder;
+end PE_Behavior;
